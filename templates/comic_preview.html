@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComicCraft AI | Comic Preview</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="/" class="brand-link">
+        ✨ COMICCRAFT AI
+    </a>
+    <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="{{ pdf_url }}" download class="primary-btn" style="margin-top:0; padding: 8px 16px; font-size: 0.9rem;">
+            Download PDF 📥
+        </a>
+        <a href="/" class="secondary-btn" style="margin:0; padding: 8px 16px; font-size: 0.9rem;">
+            + New Comic
+        </a>
+    </div>
+</header>
+
+<main class="preview-container">
+
+<section class="intro">
+    <p class="eyebrow">YOUR AI-GENERATED COMIC STRIP</p>
+    <h1>The Adventures of {{ character_name }}</h1>
+    <p style="color: #64748b; font-size: 1.05rem;">
+        <strong>Setting:</strong> {{ setting }} &nbsp;•&nbsp; 
+        <strong>Tone:</strong> {{ tone }} &nbsp;•&nbsp; 
+        <strong>Style:</strong> {{ art_style }}
+    </p>
+</section>
+
+<section class="comic-grid">
+{% for panel in layout %}
+<article class="panel-card">
+    <div class="panel-heading">
+        <span>PANEL {{ panel.panel_number }} OF 5</span>
+        <h2>{{ panel.title }}</h2>
+    </div>
+
+    <img
+        src="{{ panel.image_url }}"
+        alt="Panel {{ panel.panel_number }} Illustration"
+        loading="lazy"
+    >
+
+    {% if panel.scene_description %}
+    <p class="scene-description">
+        {{ panel.scene_description }}
+    </p>
+    {% endif %}
+
+    {% if panel.caption %}
+    <div class="text-box">
+        <strong>Caption</strong>
+        <p>{{ panel.caption }}</p>
+    </div>
+    {% endif %}
+
+    {% if panel.narration %}
+    <div class="text-box">
+        <strong>Narration</strong>
+        <p>{{ panel.narration }}</p>
+    </div>
+    {% endif %}
+
+    {% if panel.dialogue %}
+    <div class="speech-box">
+        <strong>Speech Bubble 💬</strong>
+        <p>“{{ panel.dialogue }}”</p>
+    </div>
+    {% endif %}
+</article>
+{% endfor %}
+</section>
+
+<section class="download-card">
+    <h2>Your Comic is Ready! 🎉</h2>
+    <p>
+        Save your illustrated 5-panel comic story as a beautifully formatted, printable PDF.
+    </p>
+    <a
+        class="primary-btn inline-btn"
+        href="{{ pdf_url }}"
+        download
+    >
+        Download Comic Book PDF 📄
+    </a>
+    <a
+        class="secondary-btn"
+        href="/"
+    >
+        Create Another Comic ✨
+    </a>
+</section>
+
+</main>
+
+</body>
+</html>

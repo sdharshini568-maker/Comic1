@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComicCraft AI | AI Comic Story Creator</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #f59e0b;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        .loading-steps {
+            color: #cbd5e1;
+            font-size: 1rem;
+            max-width: 480px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body class="home-page">
+
+<main class="hero">
+
+<section class="card form-card">
+
+<div class="brand">
+    ✨ COMICCRAFT AI
+</div>
+
+<h1>
+    Turn your idea into a comic.
+</h1>
+
+<p class="subtitle">
+    Create a five-panel AI comic complete with narrative pacing, dialogue speech bubbles, custom illustrations, and one-click PDF export.
+</p>
+
+{% if error %}
+<div class="alert">
+    <strong>Error:</strong> {{ error }}
+</div>
+{% endif %}
+
+<form
+    id="comicForm"
+    action="/generate"
+    method="post"
+    class="comic-form"
+>
+
+<label for="story_prompt">Story Prompt</label>
+<textarea
+    id="story_prompt"
+    name="story_prompt"
+    rows="4"
+    placeholder="Example: A brave fox discovers a glowing crystal deep inside an enchanted cavern."
+    required
+>{{ story_prompt or '' }}</textarea>
+
+<label for="character_name">Main Character Name</label>
+<input
+    id="character_name"
+    name="character_name"
+    placeholder="Example: Luna the Fox"
+    value="{{ character_name or '' }}"
+    required
+>
+
+<label for="setting">Setting</label>
+<select id="setting" name="setting" required>
+    <option value="enchanted forest" {% if setting == 'enchanted forest' %}selected{% endif %}>Enchanted Forest</option>
+    <option value="futuristic cyberpunk city" {% if setting == 'futuristic cyberpunk city' %}selected{% endif %}>Futuristic Cyberpunk City</option>
+    <option value="deep outer space" {% if setting == 'deep outer space' %}selected{% endif %}>Deep Outer Space</option>
+    <option value="ancient mystical kingdom" {% if setting == 'ancient mystical kingdom' %}selected{% endif %}>Ancient Mystical Kingdom</option>
+    <option value="underwater kingdom" {% if setting == 'underwater kingdom' %}selected{% endif %}>Underwater Kingdom</option>
+    <option value="detective noir alleyway" {% if setting == 'detective noir alleyway' %}selected{% endif %}>Detective Noir Alleyway</option>
+    <option value="high school adventure" {% if setting == 'high school adventure' %}selected{% endif %}>High School Adventure</option>
+</select>
+
+<label for="tone">Story Tone</label>
+<select id="tone" name="tone" required>
+    <option value="adventurous" {% if tone == 'adventurous' %}selected{% endif %}>Adventurous</option>
+    <option value="light-hearted & funny" {% if tone == 'light-hearted & funny' %}selected{% endif %}>Light-hearted & Funny</option>
+    <option value="dramatic & epic" {% if tone == 'dramatic & epic' %}selected{% endif %}>Dramatic & Epic</option>
+    <option value="mysterious & thrilling" {% if tone == 'mysterious & thrilling' %}selected{% endif %}>Mysterious & Thrilling</option>
+    <option value="poetic & cozy" {% if tone == 'poetic & cozy' %}selected{% endif %}>Poetic & Cozy</option>
+</select>
+
+<label for="art_style">Art Style</label>
+<select id="art_style" name="art_style" required>
+    <option value="classic American comic book" {% if art_style == 'classic American comic book' %}selected{% endif %}>Classic Comic Book</option>
+    <option value="manga / anime style" {% if art_style == 'manga / anime style' %}selected{% endif %}>Manga / Anime</option>
+    <option value="vibrant storybook illustration" {% if art_style == 'storybook illustration' or art_style == 'vibrant storybook illustration' %}selected{% endif %}>Vibrant Storybook</option>
+    <option value="pixel art retro game" {% if art_style == 'pixel art retro game' %}selected{% endif %}>Retro Pixel Art</option>
+    <option value="cinematic graphic novel" {% if art_style == 'cinematic graphic novel' %}selected{% endif %}>Graphic Novel</option>
+</select>
+
+<button
+    id="submitBtn"
+    class="primary-btn"
+    type="submit"
+>
+    Generate My Comic 🚀
+</button>
+
+</form>
+
+<p class="tiny-note">
+    Powered by Google Gemini 3.5 & AI illustration synthesis. Takes ~10-25 seconds to craft all 5 panels and layout.
+</p>
+
+</section>
+
+</main>
+
+<!-- Loading State Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <div class="loading-title">Crafting Your Comic Story...</div>
+    <p class="loading-steps">
+        Generating narrative arc, character dialogue, 5 illustrated panels, and preparing your printable PDF layout. ✨
+    </p>
+</div>
+
+<script>
+    const form = document.getElementById('comicForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const overlay = document.getElementById('loadingOverlay');
+
+    form.addEventListener('submit', function() {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Creating Comic Magic... ⏳';
+        overlay.style.display = 'flex';
+    });
+</script>
+
+</body>
+</html>
